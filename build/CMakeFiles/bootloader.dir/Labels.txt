@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/liyi/share/01_lvgl_transplant/build/CMakeFiles/bootloader
+/home/liyi/share/01_lvgl_transplant/build/CMakeFiles/bootloader.rule
+/home/liyi/share/01_lvgl_transplant/build/CMakeFiles/bootloader-complete.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/liyi/share/01_lvgl_transplant/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

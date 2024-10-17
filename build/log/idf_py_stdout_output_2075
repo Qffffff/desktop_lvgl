@@ -1,0 +1,5 @@
+[1/4] cd /home/liyi/share/01_lvgl_transplant/build/esp-idf/esptool_py && /home/liyi/.espressif/python_env/idf5.4_py3.10_env/bin/python /home/liyi/share/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/liyi/share/01_lvgl_transplant/build/partition_table/partition-table.bin /home/liyi/share/01_lvgl_transplant/build/01_lvgl_transplant_project.bin
+01_lvgl_transplant_project.bin binary size 0x13e370 bytes. Smallest app partition is 0x1f0000 bytes. 0xb1c90 bytes (36%) free.
+[2/4] Performing build step for 'bootloader'
+[1/1] cd /home/liyi/share/01_lvgl_transplant/build/bootloader/esp-idf/esptool_py && /home/liyi/.espressif/python_env/idf5.4_py3.10_env/bin/python /home/liyi/share/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/liyi/share/01_lvgl_transplant/build/bootloader/bootloader.bin
+Bootloader binary size 0x5830 bytes. 0x27d0 bytes (31%) free.

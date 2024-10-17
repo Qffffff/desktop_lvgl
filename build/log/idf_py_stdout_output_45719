@@ -1,0 +1,34 @@
+[1/9] Performing build step for 'bootloader'
+[1/1] cd /home/liyi/share/01_lvgl_transplant/build/bootloader/esp-idf/esptool_py && /home/liyi/.espressif/python_env/idf5.4_py3.10_env/bin/python /home/liyi/share/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/liyi/share/01_lvgl_transplant/build/bootloader/bootloader.bin
+Bootloader binary size 0x5830 bytes. 0x27d0 bytes (31%) free.
+[2/7] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/APP/boot_page.c.obj
+/home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c: In function 'anim_ready_cb':
+/home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c:28:47: warning: passing argument 6 of 'obj_set_anim' from incompatible pointer type [-Wincompatible-pointer-types]
+   28 |     obj_set_anim(a->var, 110, 320, 500, 2000, anim_set_y_cb, lv_obj_del_anim_ready_cb, lv_anim_path_ease_in);
+      |                                               ^~~~~~~~~~~~~
+      |                                               |
+      |                                               void (*)(void *, uint32_t) {aka void (*)(void *, long unsigned int)}
+In file included from /home/liyi/share/01_lvgl_transplant/main/APP/boot_page.h:5,
+                 from /home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c:1:
+/home/liyi/share/01_lvgl_transplant/main/APP/anim.h:8:112: note: expected 'lv_anim_exec_xcb_t' {aka 'void (*)(void *, long int)'} but argument is of type 'void (*)(void *, uint32_t)' {aka 'void (*)(void *, long unsigned int)'}
+    8 | void obj_set_anim(lv_obj_t *obj, int32_t start, int32_t end, uint32_t time, uint32_t delay, lv_anim_exec_xcb_t exec_cb, lv_anim_ready_cb_t ready_cb, lv_anim_path_cb_t path_cb);
+      |                                                                                             ~~~~~~~~~~~~~~~~~~~^~~~~~~
+/home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c: In function 'boot_page_run':
+/home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c:38:16: warning: unused variable 'scr_act_height' [-Wunused-variable]
+   38 |     lv_coord_t scr_act_height = lv_obj_get_height(lv_scr_act());
+      |                ^~~~~~~~~~~~~~
+/home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c: At top level:
+/home/liyi/share/01_lvgl_transplant/main/APP/boot_page.c:26:13: warning: 'anim_ready_cb' defined but not used [-Wunused-function]
+   26 | static void anim_ready_cb(lv_anim_t *a)
+      |             ^~~~~~~~~~~~~
+[3/7] Linking C static library esp-idf/main/libmain.a
+[4/7] Generating ld/sections.ld
+[5/7] Linking CXX executable 01_lvgl_transplant_project.elf
+[6/7] Generating binary image from built executable
+esptool.py v4.8.dev4
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+Generated /home/liyi/share/01_lvgl_transplant/build/01_lvgl_transplant_project.bin
+[7/7] cd /home/liyi/share/01_lvgl_transplant/build/esp-idf/esptool_py && /home/liyi/.espressif/python_env/idf5.4_py3.10_env/bin/python /home/liyi/share/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/liyi/share/01_lvgl_transplant/build/partition_table/partition-table.bin /home/liyi/share/01_lvgl_transplant/build/01_lvgl_transplant_project.bin
+01_lvgl_transplant_project.bin binary size 0x133f10 bytes. Smallest app partition is 0x1f0000 bytes. 0xbc0f0 bytes (38%) free.
