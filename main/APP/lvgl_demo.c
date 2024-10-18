@@ -26,6 +26,13 @@
 #include "demos/lv_demos.h"
 #include "gui_app.h"
 
+/* LV_DEMO_TASK 任务 配置
+ * 包括: 任务优先级 堆栈大小 任务句柄 创建任务
+ */
+#define LV_DEMO_TASK_PRIO   1               /* 任务优先级 */
+#define LV_DEMO_STK_SIZE    5 * 1024        /* 任务堆栈大小 */
+TaskHandle_t LV_DEMOTask_Handler;           /* 任务句柄 */
+void lv_demo_task(void *pvParameters);      /* 任务函数 */
 
 /**
  * @brief       lvgl_demo入口函数
@@ -47,13 +54,26 @@ void lvgl_demo(void)
     ESP_ERROR_CHECK(esp_timer_create(&lvgl_tick_timer_args, &lvgl_tick_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, 1 * 1000));
 
-    /* 官方demo,需要在SDK Configuration中开启对应Demo */
-    //lv_demo_music();      
-    // lv_demo_benchmark();
-    // lv_demo_widgets();
-    // lv_demo_stress();
-    // lv_demo_keypad_encoder();
-    gui_demo();
+        /* 创建LVGL任务 */
+    xTaskCreatePinnedToCore((TaskFunction_t )lv_demo_task,          /* 任务函数 */
+                            (const char*    )"lv_demo_task",        /* 任务名称 */
+                            (uint16_t       )LV_DEMO_STK_SIZE,      /* 任务堆栈大小 */
+                            (void*          )NULL,                  /* 传入给任务函数的参数 */
+                            (UBaseType_t    )LV_DEMO_TASK_PRIO,     /* 任务优先级 */
+                            (TaskHandle_t*  )&LV_DEMOTask_Handler,  /* 任务句柄 */
+                            (BaseType_t     ) 0);                   /* 该任务哪个内核运行 */
+}
+
+/**
+ * @brief       LVGL运行例程
+ * @param       pvParameters : 传入参数(未用到)
+ * @retval      无
+ */
+void lv_demo_task(void *pvParameters)
+{
+    pvParameters = pvParameters;
+
+    gui_demo();     /* 测试的demo */
 
     while (1)
     {
