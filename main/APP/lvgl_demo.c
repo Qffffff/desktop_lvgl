@@ -1,23 +1,3 @@
-/**
- ****************************************************************************************************
- * @file        lvgl_demo.c
- * @author      正点原子团队(ALIENTEK)
- * @version     V1.0
- * @date        2023-12-01
- * @brief       LVGL V8移植 实验
- * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
- ****************************************************************************************************
- * @attention
- *
- * 实验平台:正点原子 ESP32-S3 开发板
- * 在线视频:www.yuanzige.com
- * 技术论坛:www.openedv.com
- * 公司网址:www.alientek.com
- * 购买地址:openedv.taobao.com
- *
- ****************************************************************************************************
- */
-
 #include "lvgl_demo.h"
 #include "ltdc.h"
 #include "touch.h"
@@ -25,14 +5,18 @@
 #include "lvgl.h"
 #include "demos/lv_demos.h"
 #include "gui_app.h"
+#include "main_menu_page.h"
 
 /* LV_DEMO_TASK 任务 配置
  * 包括: 任务优先级 堆栈大小 任务句柄 创建任务
  */
-#define LV_DEMO_TASK_PRIO   1               /* 任务优先级 */
+#define LVGL_TASK_PRIO   2                  /* 任务优先级 */
+#define WIFI_TASK_PRIO   1                  /* 任务优先级 */
 #define LV_DEMO_STK_SIZE    5 * 1024        /* 任务堆栈大小 */
-TaskHandle_t LV_DEMOTask_Handler;           /* 任务句柄 */
-void lv_demo_task(void *pvParameters);      /* 任务函数 */
+TaskHandle_t LVGL_Task_Handler;             /* 任务句柄 */
+TaskHandle_t WIFI_Task_Handler;             /* 任务句柄 */
+void lvgl_task(void *pvParameters);         /* 任务函数 */
+void wifi_task(void *pvParameters);         /* 任务函数 */
 
 /**
  * @brief       lvgl_demo入口函数
@@ -45,6 +29,8 @@ void lvgl_demo(void)
     lv_port_disp_init();    /* lvgl显示接口初始化,放在lv_init()的后面 */
     lv_port_indev_init();   /* lvgl输入接口初始化,放在lv_init()的后面 */
 
+    
+    //wifi_scan();
     /* 为LVGL提供时基单元 */
     const esp_timer_create_args_t lvgl_tick_timer_args = {
         .callback = &increase_lvgl_tick,
@@ -54,31 +40,58 @@ void lvgl_demo(void)
     ESP_ERROR_CHECK(esp_timer_create(&lvgl_tick_timer_args, &lvgl_tick_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, 1 * 1000));
 
-        /* 创建LVGL任务 */
-    xTaskCreatePinnedToCore((TaskFunction_t )lv_demo_task,          /* 任务函数 */
+    /* 创建LVGL任务 */
+    xTaskCreatePinnedToCore((TaskFunction_t )lvgl_task,             /* 任务函数 */
                             (const char*    )"lv_demo_task",        /* 任务名称 */
                             (uint16_t       )LV_DEMO_STK_SIZE,      /* 任务堆栈大小 */
                             (void*          )NULL,                  /* 传入给任务函数的参数 */
-                            (UBaseType_t    )LV_DEMO_TASK_PRIO,     /* 任务优先级 */
-                            (TaskHandle_t*  )&LV_DEMOTask_Handler,  /* 任务句柄 */
+                            (UBaseType_t    )LVGL_TASK_PRIO,     /* 任务优先级 */
+                            (TaskHandle_t*  )&LVGL_Task_Handler,    /* 任务句柄 */
+                            (BaseType_t     ) 0);                   /* 该任务哪个内核运行 */
+    /* 创建WIFI任务 */
+    xTaskCreatePinnedToCore((TaskFunction_t )wifi_task,             /* 任务函数 */
+                            (const char*    )"wifi_task",           /* 任务名称 */
+                            (uint16_t       )LV_DEMO_STK_SIZE,      /* 任务堆栈大小 */
+                            (void*          )NULL,                  /* 传入给任务函数的参数 */
+                            (UBaseType_t    )WIFI_TASK_PRIO,     /* 任务优先级 */
+                            (TaskHandle_t*  )&WIFI_Task_Handler,    /* 任务句柄 */
                             (BaseType_t     ) 0);                   /* 该任务哪个内核运行 */
 }
+
 
 /**
  * @brief       LVGL运行例程
  * @param       pvParameters : 传入参数(未用到)
  * @retval      无
  */
-void lv_demo_task(void *pvParameters)
+void lvgl_task(void *pvParameters)
 {
     pvParameters = pvParameters;
 
     gui_demo();     /* 测试的demo */
-
+    
     while (1)
     {
         lv_timer_handler();             /* LVGL计时器 */
-        vTaskDelay(pdMS_TO_TICKS(10));  /* 延时10毫秒 */
+        vTaskDelay(pdMS_TO_TICKS(5));  /* 延时10毫秒 */
+    }
+}
+
+
+/**
+ * @brief       WIFI运行例程
+ * @param       pvParameters : 传入参数(未用到)
+ * @retval      无
+ */
+void wifi_task(void *pvParameters)
+{
+    pvParameters = pvParameters;
+
+    wifi_sta_init();
+
+    while (1)
+    {
+        vTaskDelay(pdMS_TO_TICKS(1000));  /* 延时10毫秒 */
     }
 }
 
