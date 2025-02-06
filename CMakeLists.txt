@@ -6,3 +6,6 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(01_lvgl_transplant_project)
+
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/esp-dsp)

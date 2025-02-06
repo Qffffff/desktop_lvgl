@@ -2,13 +2,17 @@ set(src_dirs
             IIC
             XL9555
             RGBLCD
-            TOUCH)
+            TOUCH
+            ES8388
+            I2S)
 
 set(include_dirs
             IIC
             XL9555
             RGBLCD
-            TOUCH)
+            TOUCH
+            ES8388
+            I2S)
 
 set(requires
             driver
